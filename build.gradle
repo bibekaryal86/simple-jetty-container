@@ -21,6 +21,8 @@ repositories {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes "Main-Class": "simple.jetty.container.App"
     }
@@ -31,14 +33,16 @@ jar {
 }
 
 dependencies {
-    implementation 'org.eclipse.jetty:jetty-server:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:jetty-security:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:jetty-servlet:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:jetty-webapp:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:jetty-annotations:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:apache-jsp:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:apache-jstl:9.4.34.v20201102'
-    implementation 'org.eclipse.jetty:jetty-jmx:9.4.34.v20201102'
+    def jettyVersion = "9.4.34.v20201102"
+
+    implementation "org.eclipse.jetty:jetty-server:$jettyVersion"
+    implementation "org.eclipse.jetty:jetty-security:$jettyVersion"
+    implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+    implementation "org.eclipse.jetty:jetty-webapp:$jettyVersion"
+    implementation "org.eclipse.jetty:jetty-annotations:$jettyVersion"
+    implementation "org.eclipse.jetty:apache-jsp:$jettyVersion"
+    implementation "org.eclipse.jetty:apache-jstl:$jettyVersion"
+    implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 }
 
 application {
