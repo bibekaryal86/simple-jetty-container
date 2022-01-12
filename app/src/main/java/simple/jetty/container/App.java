@@ -3,9 +3,10 @@
  */
 package simple.jetty.container;
 
+import org.eclipse.jetty.annotations.AnnotationConfiguration;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.webapp.Configuration;
+import org.eclipse.jetty.webapp.JettyWebXmlConfiguration;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import javax.swing.*;
@@ -27,11 +28,7 @@ public class App {
 
         webapp.setWar(warFile());
         webapp.setExtractWAR(true);
-
-        Configuration.ClassList classList = Configuration.ClassList.setServerDefault(server);
-        classList.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration",
-                "org.eclipse.jetty.annotations.AnnotationConfiguration");
-
+        webapp.addConfiguration(new JettyWebXmlConfiguration(), new AnnotationConfiguration());
         webapp.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
                 ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$");
 

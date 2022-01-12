@@ -8,3 +8,4 @@
  */
 
 rootProject.name = 'simple-jetty-container'
+include('app')
