@@ -3,73 +3,72 @@
  */
 package simple.jetty.container;
 
+import java.io.File;
+import java.lang.management.ManagementFactory;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.jetty.annotations.AnnotationConfiguration;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.JettyWebXmlConfiguration;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-
-import static java.lang.management.ManagementFactory.getPlatformMBeanServer;
-
 public class App {
 
-    public static void main(String[] args) throws Exception {
-        Server server = new Server(Integer.parseInt(System.getProperty("port", "8080")));
+  public static void main(String[] args) throws Exception {
+    Server server = new Server(Integer.parseInt(System.getProperty("port", "8080")));
 
-        MBeanContainer mbContainer = new MBeanContainer(getPlatformMBeanServer());
-        server.addBean(mbContainer);
+    MBeanContainer mbContainer = new MBeanContainer(ManagementFactory.getPlatformMBeanServer());
+    server.addBean(mbContainer);
 
-        WebAppContext webapp = new WebAppContext();
-        webapp.setContextPath(System.getProperty("contextpath", "/"));
+    WebAppContext webapp = new WebAppContext();
+    webapp.setContextPath(System.getProperty("contextpath", "/"));
 
-        webapp.setWar(warFile());
-        webapp.setExtractWAR(true);
-        webapp.addConfiguration(new JettyWebXmlConfiguration(), new AnnotationConfiguration());
-        webapp.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
-                ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$");
+    webapp.setWar(warFile());
+    webapp.setExtractWAR(true);
+    webapp.addConfiguration(new JettyWebXmlConfiguration(), new AnnotationConfiguration());
+    webapp.setAttribute(
+        "org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+        ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$");
 
-        server.setHandler(webapp);
-        server.start();
-        server.dumpStdErr();
-        server.join();
-    }
+    server.setHandler(webapp);
+    server.start();
+    server.dumpStdErr();
+    server.join();
+  }
 
-    private static String warFile() {
-        JFileChooser jFileChooser = new JFileChooser(System.getProperty("location", ""));
-        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        jFileChooser.setFileFilter(new FileNameExtensionFilter("WAR FILE", "war"));
+  private static String warFile() {
+    JFileChooser jFileChooser = new JFileChooser(System.getProperty("location", ""));
+    jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    jFileChooser.setFileFilter(new FileNameExtensionFilter("WAR FILE", "war"));
 
-        int fileChooseAction = jFileChooser.showOpenDialog(null);
-        if (fileChooseAction == JFileChooser.APPROVE_OPTION) {
-            String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
+    int fileChooseAction = jFileChooser.showOpenDialog(null);
+    if (fileChooseAction == JFileChooser.APPROVE_OPTION) {
+      String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
 
-            if (filePath.endsWith(".war")) {
-                File warFile = new File(filePath);
+      if (filePath.endsWith(".war")) {
+        File warFile = new File(filePath);
 
-                if (warFile.exists()) {
-                    if (warFile.length() < Integer.parseInt(System.getProperty("sizeinbytes", "20000000"))) {
-                        return warFile.getAbsolutePath();
-                    } else {
-                        throw new WarException("FILE TOO BIG!");
-                    }
-                } else {
-                    throw new WarException("SOMETHING WENT WRONG!");
-                }
-            } else {
-                throw new WarException("NOT WAR FILE!");
-            }
+        if (warFile.exists()) {
+          if (warFile.length() < Integer.parseInt(System.getProperty("sizeinbytes", "20000000"))) {
+            return warFile.getAbsolutePath();
+          } else {
+            throw new WarException("FILE TOO BIG!");
+          }
         } else {
-            throw new WarException("FILE NOT CHOSEN!");
+          throw new WarException("SOMETHING WENT WRONG!");
         }
+      } else {
+        throw new WarException("NOT WAR FILE!");
+      }
+    } else {
+      throw new WarException("FILE NOT CHOSEN!");
     }
+  }
 }
 
 class WarException extends RuntimeException {
-    public WarException(String message) {
-        super(message);
-    }
+  public WarException(String message) {
+    super(message);
+  }
 }

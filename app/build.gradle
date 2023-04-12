@@ -7,16 +7,19 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
     id 'java'
-
-    // Apply the application plugin to add support for building a CLI application.
     id 'application'
+
+    id 'com.diffplug.spotless' version '6.18.0'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 repositories {
-    // Use mavenCentral for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
 }
 
@@ -33,7 +36,7 @@ jar {
 }
 
 dependencies {
-    def jettyVersion = "11.0.7"
+    def jettyVersion = "11.0.14"
 
     implementation "org.eclipse.jetty:jetty-server:$jettyVersion"
     implementation "org.eclipse.jetty:jetty-security:$jettyVersion"
@@ -48,4 +51,11 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'simple.jetty.container.App'
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        googleJavaFormat()
+    }
 }
