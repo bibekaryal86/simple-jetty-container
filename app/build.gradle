@@ -45,7 +45,7 @@ dependencies {
     implementation "org.eclipse.jetty:jetty-annotations:$jettyVersion"
     implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
     implementation "org.eclipse.jetty:apache-jsp:$jettyVersion"
-    implementation 'org.eclipse.jetty:apache-jstl:11.0.0'
+    implementation 'org.eclipse.jetty:apache-jstl:11.0.14'
 }
 
 application {
