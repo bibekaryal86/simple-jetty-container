@@ -9,7 +9,6 @@
 plugins {
     id 'java'
     id 'application'
-
     id 'com.diffplug.spotless' version '6.18.0'
 }
 
@@ -36,7 +35,7 @@ jar {
 }
 
 dependencies {
-    def jettyVersion = "11.0.14"
+    def jettyVersion = "11.0.15"
 
     implementation "org.eclipse.jetty:jetty-server:$jettyVersion"
     implementation "org.eclipse.jetty:jetty-security:$jettyVersion"
