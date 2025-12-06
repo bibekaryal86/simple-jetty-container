@@ -37,7 +37,7 @@ jar {
 }
 
 dependencies {
-    def jettyVersion = "12.1.4"
+    def jettyVersion = "12.1.5"
 
     implementation "org.eclipse.jetty:jetty-server:$jettyVersion"
     implementation "org.eclipse.jetty:jetty-security:$jettyVersion"
